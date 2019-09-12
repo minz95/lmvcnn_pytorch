@@ -2,9 +2,9 @@ import os
 import torch
 import torch.optim as optim
 
-from lmvcnn.model.pair_fcn import PairPredictor
-from lmvcnn.model.loss import ContrastiveLoss
-from lmvcnn.model.layers import alexnet
+from pair_fcn import PairPredictor
+from loss import ContrastiveLoss
+from layers import alexnet
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
@@ -21,7 +21,7 @@ def train(model_type='pair_fcn'):
         for param in pair_model.parameters():
             param.requires_grad = True
 
-        model_path = 'C:/Users/HCIL/InfoVisProject/PolySquare/server/lmvcnn/model/lmvcnn_model.pt'
+        model_path = 'model/lmvcnn_model.pt'
         if os.path.isfile(model_path):
             pair_model.load_state_dict(model_path)
 

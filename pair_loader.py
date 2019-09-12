@@ -1,6 +1,6 @@
 import torch
 from torchvision import transforms
-from lmvcnn.model.pair_datasets import ImagePairDataset
+from pair_datasets import ImagePairDataset
 
 class PairLoader():
     """

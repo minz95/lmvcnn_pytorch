@@ -9,13 +9,12 @@ import torch
 from torch import nn
 from torchvision import transforms
 
-from lmvcnn.model.network_utils import label_names
-from lmvcnn.model.data_generation import DataGeneration
-from lmvcnn.model.pair_loader import PairLoader
-from lmvcnn.model.layers import FeatureLayer, alexnet
+from network_utils import label_names
+from pair_loader import PairLoader
+from layers import FeatureLayer, alexnet
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-d_path = 'C:/Users/HCIL/InfoVisProject/PolySquare/server/lmvcnn/model/'.replace("'", "")
+d_path = 'model/'
 
 class PairPredictor(nn.Module):
     def __init__(self, original_model=alexnet(pretrained=True)):
@@ -29,7 +28,6 @@ class PairPredictor(nn.Module):
                                  std=[0.229, 0.224, 0.225])
         ])
         self.category_list = label_names
-        self.data_generator = DataGeneration()
         self.data_loader = PairLoader(self.transform)
         self.losses = []
         self.iters = []

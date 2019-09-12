@@ -4,12 +4,10 @@ import numpy as np
 from PIL import Image
 import torch.utils.data as data_utils
 
-from data_generation import DataGeneration
-
 class ImagePairDataset(data_utils.dataset.Dataset):
     """
     """
-    def __init__(self, data_dir=u'C:/Users/HCIL/InfoVisProject/PolySquare/server/lmvcnn/model/image_data/', 
+    def __init__(self, data_dir=u'image_data/', 
                 view_size=48, train=True, transform=None):
         self.data_dir = data_dir.replace("'", "")
         self.transform = transform
@@ -75,10 +73,10 @@ class ImagePairDataset(data_utils.dataset.Dataset):
         """
         return len(self.pos_data)
 
-    def get_corr_list(self, corr_path='C:/Users/HCIL/Corr/'):
+    def get_corr_list(self, corr_path='Corr/'):
         """
         """
-        clist_path = os.path.join('C:/Users/HCIL/InfoVisProject/PolySquare/server/lmvcnn/model/', 'corr_list.npy')
+        clist_path = 'train_corr_list.npy'
         if os.path.isfile(clist_path):
             return np.load(clist_path).tolist()
 

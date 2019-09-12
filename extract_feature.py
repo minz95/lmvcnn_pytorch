@@ -9,12 +9,12 @@ from lmvcnn.model.data_generation import DataGeneration
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class FeatureExtractor():
-	def __init__(self, image_dir='C:/Users/HCIL/InfoVisProject/PolySquare/server/lmvcnn/Features/',
+	def __init__(self, image_dir='feature/',
 				feature_dir='C:/Users/HCIL/InfoVisProject/PolySquare/server/lmvcnn/Features/'):
 		self.image_dir = image_dir.replace("'", "")
 		self.feature_dir = feature_dir.replace("'", "")
-		self.data_dir = 'C:/Users/HCIL/Models/'.replace("'", "")
-		self.sample_dir = 'C:/Users/HCIL/InfoVisProject/PolySquare/server/lmvcnn/PointSamples/'.replace("'", "")
+		self.data_dir = 'models/'.replace("'", "")
+		self.sample_dir = 'samples/'.replace("'", "")
 		#self.model_list = next(os.walk(image_dir))[1]
 		self.view_size = 48
 		self.width = 227
@@ -27,7 +27,7 @@ class FeatureExtractor():
                                  std=[0.229, 0.224, 0.225])
             ])
 		self.model = DeployPredictor()
-		model_path = os.path.join('C:/Users/HCIL/InfoVisProject/PolySquare/server/lmvcnn/model/', 'lmvcnn_model.pt').replace("'", "")
+		model_path = os.path.join('model/', 'lmvcnn_model.pt').replace("'", "")
 		self.model.load_state_dict(torch.load(model_path))
 		self.data_generator = DataGeneration()
 		if not os.path.isdir(feature_dir):
@@ -189,17 +189,4 @@ def delete_folder(folder):
 if __name__ == '__main__':
 	
 	fe = FeatureExtractor()
-	'''
-	for d, _, f in os.walk(fe.data_dir):
-		cnt = 0
-		for _f in f:
-			
-			if cnt >= 100:
-				break
-		
-			if _f.endswith('.off'):
-				_idx = d.find('Models/')
-				fe.extractor(d[_idx+7:], _f[:-4])
-			cnt += 1
-	'''
 	fe.single_extractor("searchobj", "C:/Users/HCIL/InfoVisProject/PolySquare/server/searchobj.obj")
