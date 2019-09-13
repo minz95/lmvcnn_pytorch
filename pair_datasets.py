@@ -15,7 +15,6 @@ class ImagePairDataset(data_utils.dataset.Dataset):
         self.view_size = view_size
         self.batch_iter = 0
         self.data_iter = 0
-        self.data_generator = DataGeneration()
         self.corr_list = self.get_corr_list()
 
         #print("data generation begin")
@@ -130,9 +129,9 @@ class ImagePairDataset(data_utils.dataset.Dataset):
 
         random.shuffle(corr_list)
         # use this line to generate pair views using samples corr list
-        self.data_generator.generate_sample_view(corr_list)
+        # self.data_generator.generate_sample_view(corr_list)
 
-        clist_path = os.path.join('C:/Users/HCIL/InfoVisProject/PolySquare/server/lmvcnn/model/', 'corr_list')
+        clist_path = os.path.join('./', 'corr_list')
         np.save(clist_path, np.asarray(corr_list))
         return corr_list
 
@@ -184,13 +183,6 @@ class ImagePairDataset(data_utils.dataset.Dataset):
 if __name__ == '__main__':
     ipd = ImagePairDataset()
     ipd.get_corr_list()
-    # ipd.get_corr_list()
-    #ipd.get_data()
-    #loader = data_utils.DataLoader(ImagePairDataset(), batch_size=1, shuffle=False, num_workers=1)
-    #print(len(loader))
-    # code for testing a data loader
-    #dataloader = data_utils.DataLoader(ipd, batch_size=48, num_workers=4)
-    #print(len(dataloader))
 
     """
     for i, data in enumerate(loader, 0):

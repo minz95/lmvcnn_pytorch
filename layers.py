@@ -161,7 +161,7 @@ def alexnet(pretrained=False):
     """
     model = AlexNet()
     if pretrained:
-        model_path = 'C:/Users/HCIL/InfoVisProject/PolySquare/server/lmvcnn/model/alexnet.pth.tar'
+        model_path = './model/alexnet.pth.tar'
         pretrained_model = torch.load(model_path)
         model.load_state_dict(pretrained_model['state_dict'])
     return model

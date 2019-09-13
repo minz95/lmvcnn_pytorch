@@ -9,7 +9,6 @@ import torch
 from torch import nn
 from torchvision import transforms
 
-from network_utils import label_names
 from pair_loader import PairLoader
 from layers import FeatureLayer, alexnet
 
@@ -27,7 +26,24 @@ class PairPredictor(nn.Module):
             transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                  std=[0.229, 0.224, 0.225])
         ])
-        self.category_list = label_names
+        self.category_list = [
+            'Airplane',
+            'Bag',
+            'Cap',
+            'Car',
+            'Chair',
+            'Earphone',
+            'Guitar',
+            'Knife',
+            'Lamp',
+            'Laptop',
+            'Motorbike',
+            'Mug',
+            'Pistol',
+            'Rocket',
+            'Skateboard',
+            'Table'
+        ]
         self.data_loader = PairLoader(self.transform)
         self.losses = []
         self.iters = []

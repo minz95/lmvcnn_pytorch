@@ -1,17 +1,9 @@
 import csv
 import numpy as np
-from sklearn.neighbors import KDTree
 
 class Ranking():
     def __init__(self, data_path='feature.csv'):
         self.data_path = data_path
-    
-    def kdtree(self, k=5):
-        """
-        make a kdtree and retrieve k-nearest neighbors
-        do not hold whole data in a memory
-        This function is just for a testing purpose (printing a ranking with a small portion of data)
-        """
 
     def linear_search(self, feature, k=5):
         """
@@ -52,11 +44,6 @@ class Ranking():
                         min_dist.sort(key=lambda d: d['dist'], reverse=True)
                         break
         return min_dist
-    
-    def store_data(self):
-        """
-        store data in a database
-        """
 
 if __name__ == '__main__':
     r = Ranking(data_path='feature.csv')

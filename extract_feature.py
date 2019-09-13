@@ -3,14 +3,13 @@ import torch
 from PIL import Image
 from torchvision import transforms
 
-from lmvcnn.model.deploy_fcn import DeployPredictor
-from lmvcnn.model.data_generation import DataGeneration
+from deploy_fcn import DeployPredictor
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class FeatureExtractor():
 	def __init__(self, image_dir='feature/',
-				feature_dir='C:/Users/HCIL/InfoVisProject/PolySquare/server/lmvcnn/Features/'):
+				feature_dir='./'):
 		self.image_dir = image_dir.replace("'", "")
 		self.feature_dir = feature_dir.replace("'", "")
 		self.data_dir = 'models/'.replace("'", "")
@@ -29,13 +28,11 @@ class FeatureExtractor():
 		self.model = DeployPredictor()
 		model_path = os.path.join('model/', 'lmvcnn_model.pt').replace("'", "")
 		self.model.load_state_dict(torch.load(model_path))
-		self.data_generator = DataGeneration()
 		if not os.path.isdir(feature_dir):
 			os.system('mkdir', feature_dir)
 		self.batch_list = []
 
 	def extractor(self, category, model):
-		print('hit extractor')
 		out = os.path.join(self.feature_dir, "feature.csv").replace("\\", "/")
 		images = self.get_images(category, model)
 		self.preprocess(images)
@@ -61,50 +58,21 @@ class FeatureExtractor():
 
 		self.save_sample(category, model)
 
-		# after extracting features, erase the images in the folder (memory issue)
-		# do not need this after training is done
-		# leave this information if needed
-		#delete_folder(os.path.join(self.image_dir, model).replace("\\", "/"))
-		#delete_folder(os.path.join(self.sample_dir, category).replace("\\", "/"))
-
-	def single_extractor(self, obj_id, obj_path):
+	def single_extractor(self, obj_id, obj_path, images):
 		"""
 		extractor for a query object from the client
 		or extract a feature vector for any objects from the given path
 		"""
 		#out = os.path.join(self.feature_dir, obj_id+'.csv').replace("\\", "/")
-		images = self.get_single_images(obj_id, obj_path)
 		batch = self.single_preprocess(images)
 
 		# process the feature-extracting network
 		return self.model.forward(batch)[0].detach().numpy()
-		'''
-		with open(out, 'a') as f:
-			feature = self.model.forward(batch)
-			f.write(obj_id + ",")
-			for i, value in enumerate(feature[0]):
-				f.write("%.4f" % value)
-				if i < len(feature[0]):
-					f.write(",")
-			f.write("\n")
-		'''
-
-	def get_single_images(self, obj_id, obj_path):
-		"""
-		generate multi-view images for a query object from the client
-		"""
-		img_path = os.path.join(self.image_dir, obj_id).replace("\\", "/")
-		if not os.path.isdir(img_path) or not os.listdir(img_path):
-			self.data_generator.generate_query_view(obj_path, obj_id)
-		img_files = os.listdir(img_path)
-
-		return img_files
 
 	def get_images(self, category, model):
 		# if no images found in the path, generate images
 		img_path = os.path.join(self.image_dir, model).replace("\\", "/")
 		#if not os.path.isdir(img_path) or not os.listdir(img_path):
-		self.data_generator.generate_single_view(category, model)
 		img_files = os.listdir(img_path)
 
 		curr_idx = 0
@@ -182,11 +150,5 @@ class FeatureExtractor():
 
 		return batch.permute(3, 2, 0, 1)
 
-def delete_folder(folder):
-	for f in os.listdir(folder):
-		os.remove(os.path.join(folder, f))
-
 if __name__ == '__main__':
-	
 	fe = FeatureExtractor()
-	fe.single_extractor("searchobj", "C:/Users/HCIL/InfoVisProject/PolySquare/server/searchobj.obj")
