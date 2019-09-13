@@ -17,10 +17,13 @@ extract_feature.py
 train_corr_list.npy
 
 # dataset
-image_data
+image_data/
 
-#store the result models
-model
+# store the result models
+model/
+
+# store the sample points
+samples/
 ```
 
 ## Training
@@ -37,8 +40,17 @@ python ranking.py
 ```
 
 ## Dataset
-48 multiviews from the 3D model
-use BlenderPhong to generate multiviews
+Original 3D models for training can be downloaded at [here](https://people.cs.umass.edu/~hbhuang/local_mvcnn/). 3D models and point correspondence can be found.
+
+In the paper, possible sample points are calculated based on the raycast
+
+We used 48 multiviews from the 3D model. 
+
+Scales are: [0.25, 0.5, 0.75]
+, 12 rotation angles from sample points
+, Normals are: [(1, 0, 0), (0, 1, 0), (0, 0, 1)]
+
+Use [BlenderPhong](https://github.com/WeiTang114/BlenderPhong) to generate multiviews, or C++ source files are given in the authors' [project page](https://people.cs.umass.edu/~hbhuang/local_mvcnn/). Theses sources are not covered in this repository.
 
 ## Results
 
